@@ -6,6 +6,7 @@
 #include <QStringList>
 
 #include <cmath>
+#include <exception>
 
 namespace {
 QString trimmedPolynomial(const QString &input)
@@ -92,6 +93,23 @@ void MainWindow::on_evaluateButton_clicked()
     Polynomial p = buildPolynomialFromInput(1);
     int value = p.calculate_val(xValue);
     displayResult(tr("计算结果"), tr("P(%1) = %2").arg(xValue).arg(value));
+}
+
+void MainWindow::on_expressionEvalButton_clicked()
+{
+    const QString expressionText = ui->expressionLineEdit->text().trimmed();
+    if (expressionText.isEmpty()) {
+        showError(tr("请输入要计算的算术表达式"));
+        return;
+    }
+
+    try {
+        int result = expressionCalculator_.calculate_expression(expressionText.toStdString());
+        displayResult(tr("算术表达式结果"),
+                      tr("%1 = %2").arg(expressionText, QString::number(result)));
+    } catch (const std::exception &ex) {
+        showError(tr("表达式无效：%1").arg(QString::fromUtf8(ex.what())));
+    }
 }
 
 bool MainWindow::validatePolynomialInputs(bool requireSecond)
