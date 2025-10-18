@@ -3,6 +3,8 @@
 #include <QMainWindow>
 #include <QString>
 
+#include <optional>
+
 #include "AlgorithmExpression.h"
 #include "polynomial.h"
 
@@ -31,7 +33,7 @@ private:
     bool validatePolynomialFormat(const QString &text) const;
     void showError(const QString &message);
     QString getPolynomialText(int index) const;
-    Polynomial buildPolynomialFromInput(int index) const;
+    std::optional<Polynomial> buildPolynomialFromInput(int index);
     void displayResult(const QString &title, const QString &content);
     QString polynomialToDisplayString(const Polynomial &poly) const;
 

@@ -7,6 +7,7 @@
 
 #include <cmath>
 #include <exception>
+#include <optional>
 
 namespace {
 QString trimmedPolynomial(const QString &input)
@@ -36,10 +37,21 @@ void MainWindow::on_addButton_clicked()
         return;
     }
 
-    Polynomial p1 = buildPolynomialFromInput(1);
-    Polynomial p2 = buildPolynomialFromInput(2);
-    Polynomial result = SumOfPolynomial(p1, p2);
-    displayResult(tr("加法结果"), polynomialToDisplayString(result));
+    auto p1 = buildPolynomialFromInput(1);
+    if (!p1) {
+        return;
+    }
+    auto p2 = buildPolynomialFromInput(2);
+    if (!p2) {
+        return;
+    }
+
+    try {
+        Polynomial result = SumOfPolynomial(*p1, *p2);
+        displayResult(tr("加法结果"), polynomialToDisplayString(result));
+    } catch (const std::exception &ex) {
+        showError(tr("加法计算失败：%1").arg(QString::fromUtf8(ex.what())));
+    }
 }
 
 void MainWindow::on_subtractButton_clicked()
@@ -48,10 +60,21 @@ void MainWindow::on_subtractButton_clicked()
         return;
     }
 
-    Polynomial p1 = buildPolynomialFromInput(1);
-    Polynomial p2 = buildPolynomialFromInput(2);
-    Polynomial result = SubOfPolynomial(p1, p2);
-    displayResult(tr("减法结果"), polynomialToDisplayString(result));
+    auto p1 = buildPolynomialFromInput(1);
+    if (!p1) {
+        return;
+    }
+    auto p2 = buildPolynomialFromInput(2);
+    if (!p2) {
+        return;
+    }
+
+    try {
+        Polynomial result = SubOfPolynomial(*p1, *p2);
+        displayResult(tr("减法结果"), polynomialToDisplayString(result));
+    } catch (const std::exception &ex) {
+        showError(tr("减法计算失败：%1").arg(QString::fromUtf8(ex.what())));
+    }
 }
 
 void MainWindow::on_multiplyButton_clicked()
@@ -60,10 +83,21 @@ void MainWindow::on_multiplyButton_clicked()
         return;
     }
 
-    Polynomial p1 = buildPolynomialFromInput(1);
-    Polynomial p2 = buildPolynomialFromInput(2);
-    Polynomial result = MulOfPolynomial(p1, p2);
-    displayResult(tr("乘法结果"), polynomialToDisplayString(result));
+    auto p1 = buildPolynomialFromInput(1);
+    if (!p1) {
+        return;
+    }
+    auto p2 = buildPolynomialFromInput(2);
+    if (!p2) {
+        return;
+    }
+
+    try {
+        Polynomial result = MulOfPolynomial(*p1, *p2);
+        displayResult(tr("乘法结果"), polynomialToDisplayString(result));
+    } catch (const std::exception &ex) {
+        showError(tr("乘法计算失败：%1").arg(QString::fromUtf8(ex.what())));
+    }
 }
 
 void MainWindow::on_derivativeButton_clicked()
@@ -72,9 +106,17 @@ void MainWindow::on_derivativeButton_clicked()
         return;
     }
 
-    Polynomial p = buildPolynomialFromInput(1);
-    Polynomial result = DerOfPolynomial(p);
-    displayResult(tr("一阶导数"), polynomialToDisplayString(result));
+    auto poly = buildPolynomialFromInput(1);
+    if (!poly) {
+        return;
+    }
+
+    try {
+        Polynomial result = DerOfPolynomial(*poly);
+        displayResult(tr("一阶导数"), polynomialToDisplayString(result));
+    } catch (const std::exception &ex) {
+        showError(tr("求导计算失败：%1").arg(QString::fromUtf8(ex.what())));
+    }
 }
 
 void MainWindow::on_evaluateButton_clicked()
@@ -90,9 +132,17 @@ void MainWindow::on_evaluateButton_clicked()
         return;
     }
 
-    Polynomial p = buildPolynomialFromInput(1);
-    int value = p.calculate_val(xValue);
-    displayResult(tr("计算结果"), tr("P(%1) = %2").arg(xValue).arg(value));
+    auto poly = buildPolynomialFromInput(1);
+    if (!poly) {
+        return;
+    }
+
+    try {
+        int value = poly->calculate_val(xValue);
+        displayResult(tr("计算结果"), tr("P(%1) = %2").arg(xValue).arg(value));
+    } catch (const std::exception &ex) {
+        showError(tr("代入计算失败：%1").arg(QString::fromUtf8(ex.what())));
+    }
 }
 
 void MainWindow::on_expressionEvalButton_clicked()
@@ -162,9 +212,14 @@ QString MainWindow::getPolynomialText(int index) const
     return trimmedPolynomial(text);
 }
 
-Polynomial MainWindow::buildPolynomialFromInput(int index) const
+std::optional<Polynomial> MainWindow::buildPolynomialFromInput(int index)
 {
-    return Polynomial(getPolynomialText(index).toStdString());
+    try {
+        return Polynomial(getPolynomialText(index).toStdString());
+    } catch (const std::exception &ex) {
+        showError(tr("解析第%1个多项式失败：%2").arg(index).arg(QString::fromUtf8(ex.what())));
+        return std::nullopt;
+    }
 }
 
 void MainWindow::displayResult(const QString &title, const QString &content)
@@ -175,13 +230,12 @@ void MainWindow::displayResult(const QString &title, const QString &content)
 QString MainWindow::polynomialToDisplayString(const Polynomial &poly) const
 {
     QStringList terms;
-    int highestIndex = poly.size;
-    while (highestIndex > 0 && poly.List[highestIndex] == 0) {
-        --highestIndex;
+    if (poly.term_count() == 0) {
+        return QStringLiteral("0");
     }
 
-    for (int i = highestIndex; i >= 0; --i) {
-        int coef = poly.List[i];
+    for (int i = poly.degree(); i >= 0; --i) {
+        int coef = poly.coefficient(static_cast<std::size_t>(i));
         if (coef == 0) {
             continue;
         }

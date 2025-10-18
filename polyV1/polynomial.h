@@ -1,21 +1,47 @@
 #pragma once   
+#include <array>
+#include <cstddef>
+#include <iosfwd>
 #include <iostream>
 #include <string>
-#include <cmath>
-using namespace std; 
-class Polynomial{
-    public:
-        int List[10000]={0};//下标表示指数，元素的值表示系数
-        int size=0;//多项式的最高次数
-        int n=0;//多项式的项数
-        Polynomial(string s);//采用字符串构造多项式
-        Polynomial();//默认构造函数
-        Polynomial(const Polynomial &p);//拷贝构造函数
-        ~Polynomial();//销毁线性表
-        int calculate_val(int x);//计算多项式在x处的值
-        void output();//输出多项式
+
+class Polynomial {
+public:
+    static constexpr std::size_t kMaxExponent = 9999;
+
+    Polynomial();
+    explicit Polynomial(const std::string &repr);
+    Polynomial(const Polynomial &) = default;
+    Polynomial &operator=(const Polynomial &) = default;
+    ~Polynomial() = default;
+
+    [[nodiscard]] int calculate_val(int x) const;
+    void output(std::ostream &os = std::cout) const;
+
+    [[nodiscard]] int degree() const noexcept { return degree_; }
+    [[nodiscard]] int term_count() const noexcept { return term_count_; }
+    [[nodiscard]] int coefficient(std::size_t exponent) const;
+
+    [[nodiscard]] const std::array<int, kMaxExponent + 1> &coefficients() const noexcept
+    {
+        return coefficients_;
+    }
+
+    friend Polynomial SumOfPolynomial(const Polynomial &p1, const Polynomial &p2);
+    friend Polynomial SubOfPolynomial(const Polynomial &p1, const Polynomial &p2);
+    friend Polynomial MulOfPolynomial(const Polynomial &p1, const Polynomial &p2);
+    friend Polynomial DerOfPolynomial(const Polynomial &p);
+
+private:
+    std::array<int, kMaxExponent + 1> coefficients_{};
+    int degree_ = 0;
+    int term_count_ = 0;
+
+    void recomputeMetadata();
+    void setCoefficient(std::size_t exponent, int value);
 };
- Polynomial SumOfPolynomial(Polynomial p1,Polynomial p2);//两个多项式相加
- Polynomial SubOfPolynomial(Polynomial p1,Polynomial p2);//两个多项式相减
- Polynomial  MulOfPolynomial(Polynomial p1,Polynomial p2);//两个多项式相乘
- Polynomial DerOfPolynomial(Polynomial p);//多项式求导
+
+Polynomial SumOfPolynomial(const Polynomial &p1, const Polynomial &p2);
+Polynomial SubOfPolynomial(const Polynomial &p1, const Polynomial &p2);
+Polynomial MulOfPolynomial(const Polynomial &p1, const Polynomial &p2);
+Polynomial DerOfPolynomial(const Polynomial &p);
