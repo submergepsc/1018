@@ -1,16 +1,18 @@
 # polyV1 多项式计算器
 
-该目录提供了一个基于 Qt Widgets 的图形界面应用，封装并复用仓库中 `polynomial/` 目录下的多项式运算实现，可用于对两个多项式进行加、减、乘、求导以及在给定 x 值处的代入计算。
+该目录提供了一个基于 Qt Widgets 的图形界面应用，封装并复用 `polyV1/polynomial/` 目录下的多项式运算实现，可用于对两个多项式进行加、减、乘、求导以及在给定 x 值处的代入计算。
 
 ## 目录结构
 
 ```
 polyV1/
-├── CMakeLists.txt         # CMake 构建脚本，配置 Qt Widgets 程序并链接现有的多项式实现
+├── AlgorithmExpression/   # 解析中缀表达式并提供通用算术求值能力
+├── CMakeLists.txt         # CMake 构建脚本，配置 Qt Widgets 程序并链接多项式实现
 ├── main.cpp               # 程序入口，创建并显示主窗口
 ├── mainwindow.h           # 主窗口声明，包含信号槽和辅助工具函数
 ├── mainwindow.cpp         # 主窗口实现，负责读取输入、调用多项式运算并渲染结果
 ├── mainwindow.ui          # Qt Designer 生成的界面布局文件
+├── polynomial/            # 多项式类与加减乘导等算法实现
 └── README.md              # 本说明文档
 ```
 
@@ -32,6 +34,7 @@ polyV1/
 - **乘法**：计算 \(P(x) \times Q(x)\)
 - **求导**：计算 \(P(x)\) 的一阶导数
 - **代入 x**：在给定整数 x 处计算 \(P(x)\) 的值
+- **计算表达式**：对任意支持 `+ - * / ^` 和括号的算术表达式进行求值
 
 所有结果会在下方的只读文本区域中追加显示。
 
@@ -56,9 +59,9 @@ polyV1/
 - **CMakeLists.txt**：开启 `AUTOMOC` 与 `AUTOUIC`，自动处理 Qt MOC 与 UI 文件；查找 Qt Widgets 模块并将 `polynomial.cpp` 作为源文件编译进应用。
 - **main.cpp**：标准 Qt 应用入口，初始化 `QApplication` 并展示 `MainWindow`。
 - **mainwindow.h / mainwindow.cpp**：
-  - 提供加、减、乘、求导与代入等槽函数。
+  - 提供加、减、乘、求导、代入与通用表达式求值等槽函数。
   - 对用户输入做正则校验，避免非法格式引发算法错误。
-  - 将 `Polynomial` 结构体的结果转换为可读的代数表达式字符串。
+  - 将 `Polynomial` 结构体的结果转换为可读的代数表达式字符串，并复用 `AlgorithmExpression` 对算术表达式求值。
 - **mainwindow.ui**：定义界面布局、输入框、按钮与结果展示区域，可在 Qt Designer 中进一步调整。
 
 ## 使用提示
@@ -66,5 +69,6 @@ polyV1/
 - 输入多项式时可包含正负号，程序会自动忽略空格。
 - “求导”和“代入 x”按钮只需要第一个多项式；如果第二个多项式为空也能正常工作。
 - 结果区域会保留历史记录，方便比较不同运算结果。
+- “算术表达式”区域支持括号和 `^` 运算，自动忽略空格，可处理前导正负号。
 
 祝您使用愉快！

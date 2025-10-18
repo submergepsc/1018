@@ -3,7 +3,8 @@
 #include <QMainWindow>
 #include <QString>
 
-#include "../polynomial/polynomial.h"
+#include "AlgorithmExpression/AlgorithmExpression.h"
+#include "polynomial/polynomial.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -23,6 +24,7 @@ private slots:
     void on_multiplyButton_clicked();
     void on_derivativeButton_clicked();
     void on_evaluateButton_clicked();
+    void on_expressionEvalButton_clicked();
 
 private:
     bool validatePolynomialInputs(bool requireSecond = true);
@@ -35,4 +37,5 @@ private:
 
 private:
     Ui::MainWindow *ui;
+    AlgorithmExpression expressionCalculator_;
 };

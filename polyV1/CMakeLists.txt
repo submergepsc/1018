@@ -16,12 +16,14 @@ add_executable(${PROJECT_NAME}
     mainwindow.cpp
     mainwindow.h
     mainwindow.ui
-    ../polynomial/polynomial.cpp
+    AlgorithmExpression/AlgorithmExpression.cpp
+    polynomial/polynomial.cpp
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}/../polynomial
+    ${CMAKE_CURRENT_SOURCE_DIR}/AlgorithmExpression
+    ${CMAKE_CURRENT_SOURCE_DIR}/polynomial
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
