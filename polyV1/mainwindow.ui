@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>720</width>
+    <height>480</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>多项式计算器</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QLabel" name="descriptionLabel">
+      <property name="text">
+       <string>请输入多项式（使用格式：3^0+2^1+1^2）执行运算，或在下方输入算术表达式进行求值。</string>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="poly1Label">
+        <property name="text">
+         <string>第一个多项式：</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="poly1LineEdit">
+        <property name="placeholderText">
+         <string>例如：3^0+2^1+1^2</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="poly2Label">
+        <property name="text">
+         <string>第二个多项式：</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="poly2LineEdit">
+        <property name="placeholderText">
+         <string>例如：1^0+4^1</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="xValueLabel">
+        <property name="text">
+         <string>x 的取值：</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLineEdit" name="xValueLineEdit">
+        <property name="placeholderText">
+         <string>整数值，例如：2</string>
+        </property>
+       </widget>
+      </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="operationsLayout">
+      <item>
+       <widget class="QPushButton" name="addButton">
+        <property name="text">
+         <string>加法</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="subtractButton">
+        <property name="text">
+         <string>减法</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="multiplyButton">
+        <property name="text">
+         <string>乘法</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="derivativeButton">
+        <property name="text">
+         <string>求导</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="evaluateButton">
+        <property name="text">
+         <string>代入 x</string>
+        </property>
+       </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="expressionGroupBox">
+     <property name="title">
+      <string>算术表达式计算</string>
+     </property>
+     <layout class="QGridLayout" name="expressionLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="expressionLabel">
+        <property name="text">
+         <string>表达式：</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="expressionLineEdit">
+        <property name="placeholderText">
+         <string>支持括号与 + - * / ^，例如：(2+3)*4</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="2">
+       <widget class="QPushButton" name="expressionEvalButton">
+        <property name="text">
+         <string>计算表达式</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPlainTextEdit" name="resultTextEdit">
+     <property name="placeholderText">
+      <string>运算结果将显示在此处。</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>720</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
