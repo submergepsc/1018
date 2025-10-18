@@ -3,8 +3,8 @@
 #include <QMainWindow>
 #include <QString>
 
-#include "AlgorithmExpression/AlgorithmExpression.h"
-#include "polynomial/polynomial.h"
+#include "AlgorithmExpression.h"
+#include "polynomial.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

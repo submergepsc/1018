@@ -1,19 +1,21 @@
 # polyV1 多项式计算器
 
-该目录提供了一个基于 Qt Widgets 的图形界面应用，封装并复用 `polyV1/polynomial/` 目录下的多项式运算实现，可用于对两个多项式进行加、减、乘、求导以及在给定 x 值处的代入计算。
+该目录提供了一个基于 Qt Widgets 的图形界面应用，封装并复用同级目录中的多项式运算实现，可用于对两个多项式进行加、减、乘、求导以及在给定 x 值处的代入计算。
 
 ## 目录结构
 
 ```
 polyV1/
-├── AlgorithmExpression/   # 解析中缀表达式并提供通用算术求值能力
-├── CMakeLists.txt         # CMake 构建脚本，配置 Qt Widgets 程序并链接多项式实现
-├── main.cpp               # 程序入口，创建并显示主窗口
-├── mainwindow.h           # 主窗口声明，包含信号槽和辅助工具函数
-├── mainwindow.cpp         # 主窗口实现，负责读取输入、调用多项式运算并渲染结果
-├── mainwindow.ui          # Qt Designer 生成的界面布局文件
-├── polynomial/            # 多项式类与加减乘导等算法实现
-└── README.md              # 本说明文档
+├── AlgorithmExpression.cpp # 解析中缀表达式并提供通用算术求值能力
+├── AlgorithmExpression.h
+├── CMakeLists.txt          # CMake 构建脚本，配置 Qt Widgets 程序并链接多项式实现
+├── main.cpp                # 程序入口，创建并显示主窗口
+├── mainwindow.h            # 主窗口声明，包含信号槽和辅助工具函数
+├── mainwindow.cpp          # 主窗口实现，负责读取输入、调用多项式运算并渲染结果
+├── mainwindow.ui           # Qt Designer 生成的界面布局文件
+├── polynomial.cpp          # 多项式类与加减乘导等算法实现
+├── polynomial.h
+└── README.md               # 本说明文档
 ```
 
 ## 多项式输入格式
@@ -50,7 +52,7 @@ polyV1/
    ```
 
    - 如果 Qt 没有安装在标准路径，可以通过 `-DCMAKE_PREFIX_PATH=/path/to/Qt` 或设置 `Qt6_DIR`/`Qt5_DIR` 指定。
-   - CMake 将自动处理 `mainwindow.ui` 并编译 `polynomial/polynomial.cpp` 中的算法实现。
+   - CMake 将自动处理 `mainwindow.ui` 并编译 `polynomial.cpp` 中的算法实现。
 
 3. 生成的可执行文件位于构建目录（例如 `build/PolynomialCalculator`）中，运行即可打开图形界面。
 
