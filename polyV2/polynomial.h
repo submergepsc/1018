@@ -1,6 +1,7 @@
 #pragma once   
 #include <iostream>
 #include <string>
+#include <algorithm>
 #include <cmath>
 using namespace std; 
 class Polynomial{
@@ -19,3 +20,4 @@ class Polynomial{
  Polynomial SubOfPolynomial(Polynomial p1,Polynomial p2);//两个多项式相减
  Polynomial  MulOfPolynomial(Polynomial p1,Polynomial p2);//两个多项式相乘
  Polynomial DerOfPolynomial(Polynomial p);//多项式求导
+
